@@ -2,7 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Category
 from django.utils import timezone
 
+
 # Create your views here.
+
+
+def index_posts(posts):
+    return posts.order_by('-pub_date')[0:5]
 
 
 def index(request):
@@ -11,7 +16,8 @@ def index(request):
         pub_date__lte=dt_now,
         is_published=True,
         category__is_published=True
-    ).order_by('-pub_date')[0:5]
+    )
+    posts = index_posts(posts)
     # posts.order_by('pub_date')
     return render(request, 'blog/index.html', {'post_list': posts})
 

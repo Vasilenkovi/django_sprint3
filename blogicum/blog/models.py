@@ -55,7 +55,8 @@ class Post(BaseBlog):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name="Автор публикации"
+        verbose_name="Автор публикации",
+        related_name="posts"
     )
     location = models.ForeignKey(
         Location,
@@ -63,12 +64,14 @@ class Post(BaseBlog):
         verbose_name="Местоположение",
         null=True,
         blank=True,
+        related_name="posts"
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         verbose_name="Категория",
-        null=True
+        null=True,
+        related_name="posts"
     )
 
     class Meta:

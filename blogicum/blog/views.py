@@ -7,19 +7,19 @@ from django.utils import timezone
 
 
 def index_posts(posts):
-    return posts.order_by('-pub_date')[0:5]
-
-
-def index(request):
     dt_now = timezone.now()
-    posts = Post.objects.filter(
+    posts = posts.filter(
         pub_date__lte=dt_now,
         is_published=True,
         category__is_published=True
     )
-    posts = index_posts(posts)
+    return posts.order_by('-pub_date')
+
+
+def index(request):
+    posts = index_posts(Post.objects)
     # posts.order_by('pub_date')
-    return render(request, 'blog/index.html', {'post_list': posts})
+    return render(request, 'blog/index.html', {'post_list': posts[0:5]})
 
 
 def post_detail(request, post_id):
@@ -41,11 +41,7 @@ def category_posts(request, category_slug):
         is_published=True
     )
     dt_now = timezone.now()
-    posts = Post.objects.filter(
-        pub_date__lte=dt_now,
-        is_published=True,
-        category=category
-    )
+    posts = index_posts(category.posts)
     return render(
         request,
         'blog/category.html',

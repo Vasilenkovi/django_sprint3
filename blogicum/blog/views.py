@@ -40,7 +40,6 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    dt_now = timezone.now()
     posts = index_posts(category.posts)
     return render(
         request,
